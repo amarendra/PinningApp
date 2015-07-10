@@ -15,9 +15,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        viewResponse = (TextView) findViewById(R.id.result_text);
+        viewResponse = (TextView) findViewById(R.id.response_text);
 
         SslConnectionAsync connectAsync = new SslConnectionAsync();
+        connectAsync.execute();
     }
 
     protected void showResponse(String response) {
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
         } else {
             viewResponse.setTextColor(getResources().getColor(R.color.green));
         }
+        viewResponse.setText(response);
     }
 
     class SslConnectionAsync extends AsyncTask<Void, Void, String> {
@@ -36,18 +38,22 @@ public class MainActivity extends Activity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String result = "";
+            String response = null;
             try {
                 //do something
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            return result;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            if(response == null) {
+                response = "Response is " + response;
+            }
+            showResponse(response);
         }
     }
 }
