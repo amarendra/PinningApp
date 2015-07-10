@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PinningApp</string>
+
+    <string name="result_label_text">RESPONSE:</string>
+    <string name="result_text">This will show response from server.</string>
+    <string name="action_settings">Settings</string>
+</resources>
