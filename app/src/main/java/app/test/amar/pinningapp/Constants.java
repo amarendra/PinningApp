@@ -9,6 +9,7 @@ public class Constants {
     public static final String URL_GITHUB = "https://api.github.com";
     public static final String URL_TYPICODE = "https://jsonplaceholder.typicode.com/users";
     public static final String URL_GEOLOCATION = "https://www.telize.com/geoip?callback=";
+    public static final String URL_RANDOM = "https://www.random.org/integers/?num=16&min=0&max=255&col=16&base=10&format=plain&rnd=new";
 
     public static final String SSL_VERSION = "TLSv1.2";
 
