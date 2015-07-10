@@ -3,8 +3,8 @@
     package="com.test.amar.pinningapp" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="20" />
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
