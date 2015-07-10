@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
         @Override
         protected String doInBackground(Void... params) {
             String response = null;
+            //todo change to other URLs and other
             try {
                 byte[] secret = null;
 

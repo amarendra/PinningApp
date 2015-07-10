@@ -1,5 +1,7 @@
 package app.test.amar.pinningapp;
 
+import android.util.Log;
+
 import java.math.BigInteger;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
@@ -16,18 +18,26 @@ import javax.net.ssl.X509TrustManager;
 
 public final class PubKeyManager implements X509TrustManager {
 
+    private static final String TAG = "PubKeyManager";
+
     @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 
     }
 
     public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        RSAPublicKey serverPubKey;
+        String serverEncodedKey;
+
         if (chain == null) {
             throw new IllegalArgumentException("checkServerTrusted: X509Certificate array is null");
         }
 
         if (!(chain.length > 0)) {
             throw new IllegalArgumentException("checkServerTrusted: X509Certificate is empty");
+        } else {
+            serverPubKey = (RSAPublicKey) chain[0].getPublicKey();
+            serverEncodedKey = new BigInteger(1 /* positive */, serverPubKey.getEncoded()).toString(16);
         }
 
         if (!(null != authType && authType.equalsIgnoreCase("RSA"))) {
@@ -48,15 +58,14 @@ public final class PubKeyManager implements X509TrustManager {
 
         // Hack ahead: BigInteger and toString(). We know a DER encoded Public Key begins
         // with 0x30 (ASN.1 SEQUENCE and CONSTRUCTED), so there is no leading 0x00 to drop.
-        RSAPublicKey serverPubKey = (RSAPublicKey) chain[0].getPublicKey();
-        String serverEncodedKey = new BigInteger(1 /* positive */, serverPubKey.getEncoded()).toString(16);
 
         String keyEncoded = Constants.PUBKEY_GTIHUB_ENCODED;
+        Log.d(TAG, "AUTH TYPE: " + authType + "\n*********** RECEIVED ENCODED SERVER PUBLIC KEY ***********" + keyEncoded);
         // Pin it!
         final boolean expected = keyEncoded.equalsIgnoreCase(serverEncodedKey);
         if (!expected) {
             throw new CertificateException("checkServerTrusted():\n*********** Expected public key ***********"
-                    + keyEncoded + "\n*********** RECEIVED PUBLIC KEY ***********\n" + serverEncodedKey);
+                    + keyEncoded + "\n*********** (failed) RECEIVED ENCODED SERVER PUBLIC KEY ***********\n" + serverEncodedKey);
         }
     }
 
